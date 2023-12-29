@@ -3,7 +3,7 @@ import asyncio
 import aio_pika.abc
 
 from rabbit import get_connection, socket_process, publish, consume
-from settings import BYTES_LENGTH, HOST, PORT
+from settings import BYTES_LENGTH, HOST, PORT, BOT_QUEUE, SERVER_QUEUE
 
 
 async def incoming(reader: asyncio.StreamReader):
@@ -17,7 +17,7 @@ async def incoming(reader: asyncio.StreamReader):
         await publish(
             connection=connection,
             message=line,
-            queue_name='bot',
+            queue_name=BOT_QUEUE,
         )
 
 
@@ -31,7 +31,7 @@ async def outgoing(
     await consume(
         connection=connection,
         callback=callback,
-        queue_name='server'
+        queue_name=SERVER_QUEUE
     )
 
 
